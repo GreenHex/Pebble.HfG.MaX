@@ -87,7 +87,7 @@ static void dial_layer_update_proc( Layer *layer, GContext *ctx ) {
     .p_gpath_info = &PATH_TICK, 
     .increment = 1, 
     .tick_thk = 1, 
-    .tick_length = 19, 
+    .tick_length = 16, 
     .tick_colour = GColorDarkGray, 
     .bg_colour = background_colour
   } );
@@ -97,14 +97,14 @@ static void dial_layer_update_proc( Layer *layer, GContext *ctx ) {
     .p_gpath_info = &PATH_TICK,
     .increment = 5,
     .tick_thk = 1,
-    .tick_length = 26,
+    .tick_length = 18,
     .tick_colour = GColorDarkGray, 
     .bg_colour = background_colour
   } );
   graphics_context_set_fill_color( ctx, background_colour );
   graphics_fill_radial( ctx, grect_inset( bounds, GEdgeInsets( 0 ) ), GOvalScaleModeFitCircle, 13, 0, TRIG_MAX_ANGLE );
   graphics_context_set_fill_color( ctx, GColorLightGray );
-  graphics_fill_radial( ctx, grect_inset( bounds, GEdgeInsets( 0 ) ), GOvalScaleModeFitCircle, 3, 0, TRIG_MAX_ANGLE );
+  graphics_fill_radial( ctx, grect_inset( bounds, GEdgeInsets( 0 ) ), GOvalScaleModeFitCircle, 2, 0, TRIG_MAX_ANGLE );
 }
 
 static void hours_layer_update_proc( Layer *layer, GContext *ctx ) {
@@ -120,9 +120,9 @@ static void hours_layer_update_proc( Layer *layer, GContext *ctx ) {
     .center_pt = center_pt, 
     .angle = ( TRIG_MAX_ANGLE * ( ( ( tm_time.tm_hour % 12 ) * 6 ) + ( tm_time.tm_min / 10 ) ) ) / ( 12 * 6 ), 
     .gpath_hand = &MAX_BILL_HOUR_HAND, 
-    .gpath_hand_highlight = 0,
+    .gpath_hand_highlight = &MAX_BILL_HOUR_HAND_HIGHLIGHT,
     .hand_colour = GColorDarkGray,
-    .hand_highlight_colour = GColorDarkGray,
+    .hand_highlight_colour = GColorMintGreen,
     .hand_outline_colour = GColorBlack,
     .center_dot_radius = 6,
     .center_dot_colour = GColorDarkGray
@@ -143,13 +143,15 @@ static void minutes_layer_update_proc( Layer *layer, GContext *ctx ) {
     .center_pt = center_pt, 
     .angle = TRIG_MAX_ANGLE * tm_time.tm_min / 60, 
     .gpath_hand = tm_time.tm_min % 15 ? &MAX_BILL_MINUTE_HAND : &MAX_BILL_MINUTE_HAND_15, 
-    .gpath_hand_highlight = 0,
+    .gpath_hand_highlight = &MAX_BILL_MINUTE_HAND_HIGHLIGHT,
     .hand_colour = GColorDarkGray,
-    .hand_highlight_colour = GColorDarkGray,
+    .hand_highlight_colour = GColorMintGreen,
     .hand_outline_colour = GColorBlack,
     .center_dot_radius = 4,
     .center_dot_colour = GColorDarkGray
   } );
+  graphics_context_set_fill_color( ctx, GColorBlack );
+  graphics_draw_circle( ctx, center_pt, 2 );
 }
 
 static void date_layer_update_proc( Layer *layer, GContext *ctx ) {
@@ -189,10 +191,8 @@ void clock_init( Window* window ){
     rot_bitmap_set_compositing_mode( m_layer[i], GCompOpSet );
     layer_add_child( dial_layer, (Layer *) m_layer[i] );
     GRect digit_rect = layer_get_frame( (Layer *) m_layer[i] );
-    digit_rect = grect_centered_from_polar( grect_inset( CLOCK_DIAL_BOUNDS, GEdgeInsets( 10 ) ),
+    digit_rect = grect_centered_from_polar( grect_inset( CLOCK_DIAL_BOUNDS, GEdgeInsets( 8 ) ),
                                         GOvalScaleModeFitCircle, DEG_TO_TRIGANGLE ( i * 30 ), GSize( digit_rect.size.w, digit_rect.size.h ) );
-    digit_rect.origin.x += 1; 
-    digit_rect.origin.y += 1; 
     layer_set_frame( (Layer *) m_layer[i], digit_rect );
   }
   for ( int i = 0;  i < NUM_DIGITS ; i++ ) {
@@ -201,7 +201,7 @@ void clock_init( Window* window ){
     rot_bitmap_set_compositing_mode( h_layer[i], GCompOpSet );
     layer_add_child( dial_layer, (Layer *) h_layer[i] );
     GRect digit_rect = layer_get_frame( (Layer *) h_layer[i] );
-    digit_rect = grect_centered_from_polar( grect_inset( CLOCK_DIAL_BOUNDS, GEdgeInsets( 32 ) ),
+    digit_rect = grect_centered_from_polar( grect_inset( CLOCK_DIAL_BOUNDS, GEdgeInsets( 26 ) ),
                                         GOvalScaleModeFitCircle, DEG_TO_TRIGANGLE ( i * 30 ), GSize( digit_rect.size.w, digit_rect.size.h ) );
     digit_rect.origin.x += 1; 
     digit_rect.origin.y += 1; 

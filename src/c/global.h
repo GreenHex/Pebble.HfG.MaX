@@ -44,6 +44,15 @@ static GPathInfo MAX_BILL_HOUR_HAND = {
   }
 };
 
+static GPathInfo MAX_BILL_HOUR_HAND_HIGHLIGHT = {
+  4, (GPoint []) {
+    { -2, -10 },
+    { -2, -26 },
+    { 2, -26 },
+    { 2, -10 }
+  }
+};
+
 static GPathInfo MAX_BILL_MINUTE_HAND = {
   5, (GPoint []) {
      { -3, 0 },
@@ -51,6 +60,15 @@ static GPathInfo MAX_BILL_MINUTE_HAND = {
     { 0, -56 },
     { 3, -50 },
     { 3, 0 }
+  }
+};
+
+static GPathInfo MAX_BILL_MINUTE_HAND_HIGHLIGHT = {
+  4, (GPoint []) {
+     { -2, -10 },
+    { -2, -48 },
+    { 2, -48 },
+    { 2, -10 }
   }
 };
 
