@@ -70,6 +70,18 @@ static void handle_clock_tick( struct tm *tick_time, TimeUnits units_changed ) {
   if ( ( units_changed & HOUR_UNIT ) && ( !quiet_time_is_active() ) ) vibes_enqueue_custom_pattern( double_vibe_pattern );
 }
 
+static void window_layer_update_proc( Layer *layer, GContext *ctx ) {
+  GRect bounds = layer_get_bounds( layer );
+  graphics_context_set_antialiased( ctx, true );
+  #ifdef SHOW_LAYER_OUTLINES
+  graphics_context_set_stroke_color( ctx, GColorLightGray );
+  graphics_draw_rect( ctx, bounds );
+  #endif
+  GBitmap *bg_bitmap = gbitmap_create_with_resource( RESOURCE_ID_IMAGE_F );
+  graphics_draw_bitmap_in_rect( ctx, bg_bitmap, bounds );
+  gbitmap_destroy( bg_bitmap );
+}
+
 static void dial_layer_update_proc( Layer *layer, GContext *ctx ) {
   GRect bounds = layer_get_bounds( layer );
   GPoint center_pt = grect_center_point( &bounds );
@@ -78,6 +90,7 @@ static void dial_layer_update_proc( Layer *layer, GContext *ctx ) {
   graphics_context_set_stroke_color( ctx, GColorLightGray );
   graphics_draw_rect( ctx, bounds );
   #endif
+  
   graphics_context_set_fill_color( ctx, background_colour );
   graphics_fill_radial( ctx, grect_inset( bounds, GEdgeInsets( 1 ) ), GOvalScaleModeFitCircle, bounds.size.w / 2, 0, TRIG_MAX_ANGLE );
   
@@ -87,7 +100,7 @@ static void dial_layer_update_proc( Layer *layer, GContext *ctx ) {
     .p_gpath_info = &PATH_TICK, 
     .increment = 1, 
     .tick_thk = 1, 
-    .tick_length = 16, 
+    .tick_length = 18, 
     .tick_colour = GColorDarkGray, 
     .bg_colour = background_colour
   } );
@@ -97,12 +110,12 @@ static void dial_layer_update_proc( Layer *layer, GContext *ctx ) {
     .p_gpath_info = &PATH_TICK,
     .increment = 5,
     .tick_thk = 1,
-    .tick_length = 18,
+    .tick_length = 20,
     .tick_colour = GColorDarkGray, 
     .bg_colour = background_colour
   } );
   graphics_context_set_fill_color( ctx, background_colour );
-  graphics_fill_radial( ctx, grect_inset( bounds, GEdgeInsets( 0 ) ), GOvalScaleModeFitCircle, 13, 0, TRIG_MAX_ANGLE );
+  graphics_fill_radial( ctx, grect_inset( bounds, GEdgeInsets( 0 ) ), GOvalScaleModeFitCircle, 14, 0, TRIG_MAX_ANGLE );
   graphics_context_set_fill_color( ctx, GColorLightGray );
   graphics_fill_radial( ctx, grect_inset( bounds, GEdgeInsets( 0 ) ), GOvalScaleModeFitCircle, 2, 0, TRIG_MAX_ANGLE );
 }
@@ -180,6 +193,8 @@ void clock_init( Window* window ){
   background_colour = BACKGROUND_COLOUR;
   foreground_colour = FOREGROUND_COLOUR;
   
+  layer_set_update_proc( window_layer, window_layer_update_proc );
+  
   dial_layer = layer_create( CLOCK_DIAL_FRAME );
   layer_set_update_proc( dial_layer, dial_layer_update_proc );
   layer_add_child( window_layer, dial_layer );
@@ -201,7 +216,7 @@ void clock_init( Window* window ){
     rot_bitmap_set_compositing_mode( h_layer[i], GCompOpSet );
     layer_add_child( dial_layer, (Layer *) h_layer[i] );
     GRect digit_rect = layer_get_frame( (Layer *) h_layer[i] );
-    digit_rect = grect_centered_from_polar( grect_inset( CLOCK_DIAL_BOUNDS, GEdgeInsets( 26 ) ),
+    digit_rect = grect_centered_from_polar( grect_inset( CLOCK_DIAL_BOUNDS, GEdgeInsets( 28 ) ),
                                         GOvalScaleModeFitCircle, DEG_TO_TRIGANGLE ( i * 30 ), GSize( digit_rect.size.w, digit_rect.size.h ) );
     digit_rect.origin.x += 1; 
     digit_rect.origin.y += 1; 
@@ -216,9 +231,9 @@ void clock_init( Window* window ){
   layer_set_update_proc( minutes_layer, minutes_layer_update_proc );
   layer_add_child( dial_layer, minutes_layer );
   
-  date_layer = layer_create( DATE_FRAME );
-  layer_set_update_proc( date_layer, date_layer_update_proc );
-  layer_add_child( window_layer, date_layer );
+  // date_layer = layer_create( DATE_FRAME );
+  // layer_set_update_proc( date_layer, date_layer_update_proc );
+  // layer_add_child( window_layer, date_layer );
   
   tick_timer_service_subscribe( MINUTE_UNIT, handle_clock_tick );
   time_t now = time( NULL );
@@ -226,7 +241,7 @@ void clock_init( Window* window ){
 }
 
 void clock_deinit( void ) {
-  if ( date_layer ) layer_destroy( date_layer );
+  // if ( date_layer ) layer_destroy( date_layer );
   if ( minutes_layer ) layer_destroy( minutes_layer );
   if ( hours_layer ) layer_destroy( hours_layer );
   if ( dial_layer ) layer_destroy( dial_layer );

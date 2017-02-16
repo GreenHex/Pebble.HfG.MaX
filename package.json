@@ -11,6 +11,42 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/m_60.png",
+                    "name": "IMAGE_M_60",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/f.png",
+                    "name": "IMAGE_F",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/e.png",
+                    "name": "IMAGE_E",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/d.png",
+                    "name": "IMAGE_D",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/c.png",
+                    "name": "IMAGE_C",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/Johannes-Itten-Colour-Wheel.png",
+                    "name": "IMAGE_BG",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/m_55.png",
                     "name": "IMAGE_M_55",
                     "targetPlatforms": null,
