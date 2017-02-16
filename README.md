@@ -1,2 +1,2 @@
-# Pebble.HfG.A
+# Pebble.HfG.MaX
 Analog version of HfG
