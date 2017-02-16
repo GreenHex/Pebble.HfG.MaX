@@ -116,7 +116,7 @@ static void dial_layer_update_proc( Layer *layer, GContext *ctx ) {
   } );
   graphics_context_set_fill_color( ctx, background_colour );
   graphics_fill_radial( ctx, grect_inset( bounds, GEdgeInsets( 0 ) ), GOvalScaleModeFitCircle, 14, 0, TRIG_MAX_ANGLE );
-  graphics_context_set_fill_color( ctx, GColorLightGray );
+  graphics_context_set_fill_color( ctx, GColorDarkGray );
   graphics_fill_radial( ctx, grect_inset( bounds, GEdgeInsets( 0 ) ), GOvalScaleModeFitCircle, 2, 0, TRIG_MAX_ANGLE );
 }
 
