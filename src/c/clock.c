@@ -218,8 +218,6 @@ void clock_init( Window* window ){
     GRect digit_rect = layer_get_frame( (Layer *) h_layer[i] );
     digit_rect = grect_centered_from_polar( grect_inset( CLOCK_DIAL_BOUNDS, GEdgeInsets( 28 ) ),
                                         GOvalScaleModeFitCircle, DEG_TO_TRIGANGLE ( i * 30 ), GSize( digit_rect.size.w, digit_rect.size.h ) );
-    digit_rect.origin.x += 1; 
-    digit_rect.origin.y += 1; 
     layer_set_frame( (Layer *) h_layer[i], digit_rect );
   }
   
