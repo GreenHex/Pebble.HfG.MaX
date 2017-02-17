@@ -2,7 +2,7 @@
     "author": "The Resetter",
     "dependencies": {},
     "keywords": [],
-    "name": "hfg-max-v1.1",
+    "name": "hfg-max-v1.2",
     "pebble": {
         "displayName": "HfG-MaX",
         "enableMultiJS": true,
@@ -208,5 +208,5 @@
             "watchface": true
         }
     },
-    "version": "1.1.0"
+    "version": "1.2.0"
 }
